@@ -4,7 +4,7 @@ import com.forkliu.demo.mvp.model.IUser;
 import com.forkliu.demo.mvp.model.User;
 import com.forkliu.demo.mvp.view.IUserView;
 
-public class UserPresenter {
+public class UserPresenter extends BasePresenter{
     private IUserView userView;
     private IUser user;
 
