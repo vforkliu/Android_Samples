@@ -1,6 +1,7 @@
 # Android_Samples
 some example for android
 
+https://github.com/KunMinX/Jetpack-MVVM-Best-Practice
 
 ## 参考资料
 - [Android Room Database Example – Building a Todo App](https://www.simplifiedcoding.net/android-room-database-example/)
