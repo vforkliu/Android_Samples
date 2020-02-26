@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "171324043677",
+    "firebase_url": "https://fir-phoneauthentication-fd2c6.firebaseio.com",
+    "project_id": "fir-phoneauthentication-fd2c6",
+    "storage_bucket": "fir-phoneauthentication-fd2c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171324043677:android:b095c10d8f2ac9a8cfbf74",
+        "android_client_info": {
+          "package_name": "com.forkliu.demo.firebasephoneauthentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171324043677-3ea2hr5592hu6pola2bl7m8ass6ff4pa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.forkliu.demo.firebasephoneauthentication",
+            "certificate_hash": "5fd2b778b017f83ba32519ff7bca6c22f5788c18"
+          }
+        },
+        {
+          "client_id": "171324043677-nni8490br8qt9mbfvgv3gp077n9i1hpc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdgJu8JFjOJ1apcnDEHPXp8tMZeNrdPqg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171324043677-nni8490br8qt9mbfvgv3gp077n9i1hpc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
