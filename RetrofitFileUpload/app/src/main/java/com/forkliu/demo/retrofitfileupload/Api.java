@@ -10,7 +10,7 @@ public interface Api {
     //the base URL for our API
     //make sure you are not using localhost
     //find the ip usinc ipconfig command
-    String BASE_URL = "http://localhost/ImageUploadApi/";
+    String BASE_URL = "http://192.168.1.106:8086/www/ImageUploadApi/";
 
     //this is our multipart request
     //we have two parameters on is name and other one is description
