@@ -1,0 +1,2 @@
+rootProject.name='MMVM Best Practice'
+include ':app'
