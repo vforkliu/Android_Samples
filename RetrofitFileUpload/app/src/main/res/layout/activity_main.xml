@@ -5,6 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <Button
+        android:id="@+id/btn_getallimages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="Get All Images" />
+    <Button
+        android:id="@+id/btn_getimage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btn_getallimages"
+        android:text="Get Image" />
 
     <Button
         android:id="@+id/button"

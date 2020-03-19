@@ -30,7 +30,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        findViewById(R.id.btn_getallimages).setOnClickListener(this);
+        findViewById(R.id.btn_getimage).setOnClickListener(this);
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
+        // File file = new File("/sdcard/Download/Screenshots/Screenshot_20200120-193921.png");
 
         //creating request body for file
         RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
@@ -112,21 +115,125 @@ public class MainActivity extends AppCompatActivity {
         Api api = retrofit.create(Api.class);
 
         //creating a call and calling the upload image method
-        Call<MyResponse> call = api.uploadImage(requestFile, descBody);
+        Call<UploadImageApiResponse> call = api.uploadImage(requestFile, descBody);
 
         //finally performing the call
-        call.enqueue(new Callback<MyResponse>() {
+        call.enqueue(new Callback<UploadImageApiResponse>() {
             @Override
-            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                if (!response.body().error) {
-                    Toast.makeText(getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+            public void onResponse(Call<UploadImageApiResponse> call, Response<UploadImageApiResponse> response) {
+                UploadImageApiResponse body = response.body();
+                if (body == null){
+                    String message = response.toString();
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }else {
+                    if (!body.error) {
+                        Toast.makeText(getApplicationContext(), "File Uploaded Successfully...", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<MyResponse> call, Throwable t) {
+            public void onFailure(Call<UploadImageApiResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_getallimages:
+                getAllImages();
+                break;
+            case R.id.btn_getimage:
+                getImage();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void getImage(){
+        // b193f8eedfa8e747811e2399ab133e22
+        String hash = "b193f8eedfa8e747811e2399ab133e22";
+        //The gson builder
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        //creating retrofit object
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        //creating our api
+        Api api = retrofit.create(Api.class);
+
+        //creating a call and calling the upload image method
+        Call<UploadImageApiResponse> call = api.getImage(hash);
+
+        //finally performing the call
+        call.enqueue(new Callback<UploadImageApiResponse>() {
+            @Override
+            public void onResponse(Call<UploadImageApiResponse> call, Response<UploadImageApiResponse> response) {
+                UploadImageApiResponse body = response.body();
+                if (body != null){
+                    if (!body.error) {
+                        Toast.makeText(getApplicationContext(), body.message, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Some error occurred...", Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    String message = response.toString();
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UploadImageApiResponse> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void getAllImages(){
+//The gson builder
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        //creating retrofit object
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        //creating our api
+        Api api = retrofit.create(Api.class);
+
+        //creating a call and calling the upload image method
+        Call<UploadImageApiResponse> call = api.getAllImages();
+
+        //finally performing the call
+        call.enqueue(new Callback<UploadImageApiResponse>() {
+            @Override
+            public void onResponse(Call<UploadImageApiResponse> call, Response<UploadImageApiResponse> response) {
+                UploadImageApiResponse body = response.body();
+                if (body != null){
+                    if (!body.error) {
+                        Toast.makeText(getApplicationContext(), body.message, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), body.message, Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    String message = response.toString();
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UploadImageApiResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
