@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
 //                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                startActivityForResult(i, 100);
-                String path = "/sdcard/Android/data/com.forkliu.demo.retrofitfileupload/files/images/test.png";
+                String path = "/sdcard/Download/images/test.png";
                 // String path = "/sdcard/images/test.png";
                 uploadFile(path,"desc");
             }

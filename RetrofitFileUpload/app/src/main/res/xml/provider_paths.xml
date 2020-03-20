@@ -2,7 +2,7 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <files-path name="if_images" path="images/"/>
     <cache-path name="ic_images" path="images/" />
-    <external-path name="e_images" path="images/" />
+    <external-path name="e_images" path="Download/images/" />
     <external-files-path name="ef_images" path="images/" />
     <external-cache-path name="ec_images" path="images/" />
     <external-media-path name="em_images" path="images/" />
