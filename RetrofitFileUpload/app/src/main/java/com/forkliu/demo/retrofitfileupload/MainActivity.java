@@ -2,6 +2,7 @@ package com.forkliu.demo.retrofitfileupload;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
@@ -11,9 +12,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -23,6 +27,7 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,8 +58,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 100);
+//                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(i, 100);
+                String path = "/sdcard/Android/data/com.forkliu.demo.retrofitfileupload/files/images/test.png";
+                // String path = "/sdcard/images/test.png";
+                uploadFile(path,"desc");
             }
         });
     }
@@ -89,14 +97,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return result;
     }
 
+    private void uploadFile(String path,String desc){
+        File file = new File(path);
+        Log.d("Demo","file size:" + file.length());
+        Uri uri = Uri.fromFile(file);
+        uploadFile(uri,desc);
+    }
     private void uploadFile(Uri fileUri, String desc) {
 
         //creating a file
-        File file = new File(getRealPathFromURI(fileUri));
+        // File file = new File(getRealPathFromURI(fileUri));
+        File file = new File(fileUri.getPath());
         // File file = new File("/sdcard/Download/Screenshots/Screenshot_20200120-193921.png");
 
+        File dir = Environment.getExternalStorageDirectory();
+        Log.e("Demo","external dir:" + dir.getAbsolutePath());
+        String mimeType = null;
+        try {
+            Uri uri = FileProvider.getUriForFile(this, "com.forkliu.demo.retrofitfileupload.fileprovider", file);
+            mimeType = getContentResolver().getType(uri);
+        }catch (Exception e){
+            Log.e("Demo",e.getMessage());
+            e.printStackTrace();
+        }
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
+
+//        String extension = MimeTypeMap.getFileExtensionFromUrl(fileUri.getPath());
+//        if (extension != null) {
+//            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+//        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse(mimeType), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
         RequestBody descBody = RequestBody.create(MediaType.parse("text/plain"), desc);
 
         //The gson builder
@@ -115,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Api api = retrofit.create(Api.class);
 
         //creating a call and calling the upload image method
-        Call<UploadImageApiResponse> call = api.uploadImage(requestFile, descBody);
+        Call<UploadImageApiResponse> call = api.uploadImage(fileToUpload, descBody);
 
         //finally performing the call
         call.enqueue(new Callback<UploadImageApiResponse>() {
